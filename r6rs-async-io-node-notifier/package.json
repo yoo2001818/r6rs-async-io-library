@@ -1,6 +1,6 @@
 {
   "name": "r6rs-async-io-node-notifier",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Wrapper of node-notifier for r6rs-async-io",
   "main": "lib/index.js",
   "scripts": {
@@ -24,6 +24,6 @@
   "dependencies": {
     "node-notifier": "^4.6.0",
     "r6rs": "^0.1.10",
-    "r6rs-async-io": "^0.1.3"
+    "r6rs-async-io": "^0.1.5"
   }
 }

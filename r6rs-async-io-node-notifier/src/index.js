@@ -1,7 +1,8 @@
 import notifier from 'node-notifier';
 import { toObject, fromAssoc, STRING } from 'r6rs';
+import { Library } from 'r6rs-async-io';
 
-export default {
+export default new Library('node-notifier', {
   'notifier/send': (params, callback) => {
     let options;
     if (params.type === STRING) {
@@ -15,4 +16,4 @@ export default {
     });
     setTimeout(() => callback([], true), 0);
   }
-};
+});

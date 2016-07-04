@@ -1,5 +1,6 @@
 import wpi from 'wiring-pi';
 import { toObject } from 'r6rs';
+import { Library } from 'r6rs-async-io';
 
 const enums = {
   input: wpi.INPUT,
@@ -17,7 +18,7 @@ const enums = {
   setup: wpi.INT_EDGE_SETUP
 };
 
-export default {
+export default new Library('wiring-pi', {
   'wiringPi/setup': (params, callback) => {
     let options = toObject(params);
     wpi.setup(options[0]);
@@ -124,4 +125,4 @@ export default {
     wpi.softToneStop(options[0]);
     setTimeout(() => callback([], true), 0);
   }
-};
+});
