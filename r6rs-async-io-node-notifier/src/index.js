@@ -2,7 +2,7 @@ import notifier from 'node-notifier';
 import { toObject, fromAssoc, STRING } from 'r6rs';
 
 export default {
-  'notifier-send': (params, callback) => {
+  'notifier/send': (params, callback) => {
     let options;
     if (params.type === STRING) {
       options = params.value;

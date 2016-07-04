@@ -16,12 +16,12 @@ ioManager.resolver.addLibrary(notifierLib);
 machine.loadLibrary(ioManager.getLibrary());
 
 machine.evaluate(`
-(io-exec "notifier-send" '(
+(io-exec "notifier/send" '(
   (title "알림을 시작합니다")
   (message "10초 뒤에 알림이 다시 날아올겁니다")
 ))
 (io-once "setInterval" 10000 (lambda ()
-  (io-exec "notifier-send" '(
+  (io-exec "notifier/send" '(
     (title "알림이 끝났습니다")
     (message "넵 끝남")
     (hint "string:sound-name:complete")
