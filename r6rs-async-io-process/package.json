@@ -1,6 +1,6 @@
 {
   "name": "r6rs-async-io-process",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Wrapper of child-process for r6rs-async-io",
   "main": "lib/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "mocha": "^2.5.3"
   },
   "dependencies": {
-    "r6rs": "^0.1.10",
+    "r6rs": "^0.1.16",
     "r6rs-async-io": "^0.1.5"
   }
 }
