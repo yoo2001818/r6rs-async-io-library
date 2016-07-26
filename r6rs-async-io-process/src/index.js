@@ -33,7 +33,7 @@ function makeListener(type) {
             callback(v.slice(1), true);
             return false;
           } else {
-            callback([]);
+            callback([null]);
             return true;
           }
         }
