@@ -37,7 +37,7 @@ export default new Library('wiring-pi', {
   'wiringPi/digitalRead': (params, callback) => {
     let options = toObject(params);
     setTimeout(() => {
-      callback([wpi.digitalRead(options[0])], true);
+      callback([wpi.digitalRead(options[0]) == 1], true);
     }, 0);
   },
   'wiringPi/digitalWrite': (params, callback) => {
