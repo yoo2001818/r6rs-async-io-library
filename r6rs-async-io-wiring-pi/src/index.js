@@ -2,6 +2,18 @@ import wpi from 'wiring-pi';
 import { toObject } from 'r6rs';
 import { Library } from 'r6rs-async-io';
 
+let lcdId = 0;
+let lcdFds = {};
+
+function wrapLcd(op) {
+  return (params, callback) => {
+    let options = toObject(params);
+    let fd = lcdFds[options[0]];
+    if (fd != null) op(fd, options);
+    setTimeout(() => callback([], true), 0);
+  };
+}
+
 const enums = {
   input: wpi.INPUT,
   output: wpi.OUTPUT,
@@ -124,5 +136,30 @@ export default new Library('wiring-pi', {
     let options = toObject(params);
     wpi.softToneStop(options[0]);
     setTimeout(() => callback([], true), 0);
-  }
+  },
+  'wiringPi/lcdInit': (params, callback) => {
+    let options = toObject(params);
+    let fd = wpi.lcdInit.apply(wpi, options);
+    let id = lcdId ++;
+    lcdFds[id] = fd;
+    setTimeout(() => callback([id], true), 0);
+  },
+  'wiringPi/lcdHome': wrapLcd((fd) => wpi.lcdHome(fd)),
+  'wiringPi/lcdClear': wrapLcd((fd) => wpi.lcdClear(fd)),
+  'wiringPi/lcdDisplay': wrapLcd((fd, options) =>
+    wpi.lcdDisplay(fd, options[1])),
+  'wiringPi/lcdCursor': wrapLcd((fd, options) =>
+    wpi.lcdCursor(fd, options[1])),
+  'wiringPi/lcdCursorBlink': wrapLcd((fd, options) =>
+    wpi.lcdCursorBlink(fd, options[1])),
+  'wiringPi/lcdPosition': wrapLcd((fd, options) =>
+    wpi.lcdPosition(fd, options[1], options[2])),
+  'wiringPi/lcdCharDef': wrapLcd((fd, options) =>
+    wpi.lcdCharDef(fd, options[1], options[2])),
+  'wiringPi/lcdPutchar': wrapLcd((fd, options) =>
+    wpi.lcdPutchar(fd, options[1])),
+  'wiringPi/lcdPuts': wrapLcd((fd, options) =>
+    wpi.lcdPuts(fd, options[1])),
+  'wiringPi/lcdPrintf': wrapLcd((fd, options) =>
+    wpi.lcdPrintf(fd, options[1]))
 });
