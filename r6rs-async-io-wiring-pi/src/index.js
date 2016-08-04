@@ -4,6 +4,8 @@ import { Library } from 'r6rs-async-io';
 
 let lcdId = 0;
 let lcdFds = {};
+let lcdArr = [];
+let initState = null;
 
 function wrapLcd(op) {
   return (params, callback) => {
@@ -33,7 +35,10 @@ const enums = {
 export default new Library('wiring-pi', {
   'wiringPi/setup': (params, callback) => {
     let options = toObject(params);
-    wpi.setup(options[0]);
+    if (initState !== options[0]) {
+      wpi.setup(options[0]);
+      initState = options[0];
+    }
     setTimeout(() => callback([], true), 0);
   },
   'wiringPi/pinMode': (params, callback) => {
@@ -139,9 +144,20 @@ export default new Library('wiring-pi', {
   },
   'wiringPi/lcdInit': (params, callback) => {
     let options = toObject(params);
-    let fd = wpi.lcdInit.apply(wpi, options);
-    let id = lcdId ++;
-    lcdFds[id] = fd;
+    // Find exact match
+    let id;
+    let entry = lcdArr.find(obj =>
+      obj.options.every((v, i) => v === options[i]));
+    if (entry != null) {
+      id = entry.id;
+    } else {
+      let fd = wpi.lcdInit.apply(wpi, options);
+      let id = lcdId ++;
+      lcdFds[id] = fd;
+      lcdArr.push({
+        options, id
+      });
+    }
     setTimeout(() => callback([id], true), 0);
   },
   'wiringPi/lcdHome': wrapLcd((fd) => wpi.lcdHome(fd)),
