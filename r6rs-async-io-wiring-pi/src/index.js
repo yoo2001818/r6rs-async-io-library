@@ -152,7 +152,7 @@ export default new Library('wiring-pi', {
       id = entry.id;
     } else {
       let fd = wpi.lcdInit.apply(wpi, options);
-      let id = lcdId ++;
+      id = lcdId ++;
       lcdFds[id] = fd;
       lcdArr.push({
         options, id
